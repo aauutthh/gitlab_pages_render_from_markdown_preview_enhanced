@@ -189,16 +189,16 @@ async function main() {
     // html export
     await engine.htmlExport({ offline: true, runAllCodeChunks: true });
 
-    // if (ouputDir) {
-    //   let htmlPath = filePath.replace(/\.[^.]+$/, '.html');
-    //   let htmlRelPath = path.relative(workingDir, htmlPath)
-    //   let outputPath = path.join(ouputDir, htmlRelPath)
-    //   await fs.mkdir(path.dirname(outputPath), { recursive: true })
-    //   await fs.copyFile(htmlPath, outputPath, async (err) => {
-    //     if(err) console.log(err);
-    //   });
+    if (ouputDir) {
+      let htmlPath = filePath.replace(/\.[^.]+$/, '.html');
+      let htmlRelPath = path.relative(workingDir, htmlPath)
+      let outputPath = path.join(ouputDir, htmlRelPath)
+      await fs.mkdir(path.dirname(outputPath), { recursive: true })
+      await fs.copyFile(htmlPath, outputPath, async (err) => {
+        if(err) console.log(err);
+      });
       
-    // }
+    }
   }
 
   return process.exit();
