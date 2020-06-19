@@ -201,6 +201,35 @@ async function main() {
     }
   }
 
+  listHTMLFrags = files.map((filePath) => {
+    let htmlPath = filePath.replace(/\.[^.]+$/, '.html');
+    let htmlRelPath = path.relative(workingDir, htmlPath)
+    let itemName = htmlRelPath.replace(/\.[^.]+$/, '');
+    return `<li><a href='${htmlRelPath}'>${itemName}</a></li>`
+  })
+
+  listInnerHTML = listHTMLFrags.join('\n')
+
+  const html = `<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>目录</title>
+    </head>
+    <body>
+    <ul>
+      ${listInnerHTML}
+    </ul>
+    </body>
+  </html>`;
+
+
+  await fs.writeFile(path.join(ouputDir, "index.html"), html, error => {
+    if (error) {
+      console.log(error);
+    }
+  });
+
   return process.exit();
 }
 
