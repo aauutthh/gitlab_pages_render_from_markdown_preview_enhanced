@@ -1,17 +1,12 @@
-FROM node:12.18.1-slim
-RUN useradd -ms /bin/sh gitlab
+FROM openjdk:13-alpine3.10
+RUN apk add --update --no-cache nodejs npm graphviz
+RUN mkdir -p /gitlab-pages-render 
+COPY package.json /gitlab-pages-render
+RUN cd /gitlab-pages-render && \
+    npm install --save
+COPY render.js /gitlab-pages-render
+COPY .mume /root/.mume
 
-USER gitlab
+RUN ln -s /gitlab-pages-render/render.js /bin/render.js
 
-RUN mkdir -p /home/gitlab/gitlab-pages-render 
-COPY package.json /home/gitlab/gitlab-pages-render
-RUN cd /home/gitlab/gitlab-pages-render && \
-    npm install
-COPY render.js /home/gitlab/gitlab-pages-render
-COPY .mume /home/gitlab/.mume
-
-USER root
-RUN ln -s /home/gitlab/gitlab-pages-render/render.js /bin/render.js
-
-USER gitlab
 CMD [ "/bin/render.js" ]
