@@ -5,7 +5,7 @@
 const mume = require("@shd101wyy/mume");
 const path = require("path");
 const os = require("os");
-const glob = require("glob-promise");
+const glob = require("glob");
 const { promises: fs } = require("fs");
 
 async function main() {
@@ -14,35 +14,35 @@ async function main() {
 
   workingDir = process.argv[2]
   ouputDir = process.argv[3]
-  await glob(path.join(workingDir, '/**/*.md'), { nodir: true }).then(async (files)=>{
-    render_promises = files.map(async (filePath) => {
-      console.log(filePath)
-      let engine = new mume.MarkdownEngine({
-        filePath: filePath,
-        config: {
-          configPath: configPath,
-          previewTheme: "github-light.css",
-          // revealjsTheme: "white.css"
-          codeBlockTheme: "default.css",
-          printBackground: true,
-          enableScriptExecution: true, // <= for running code chunks
-        },
+  const globPromises = glob.sync(path.join(workingDir, '/**/*.md'), { nodir: true }).map(async (filePath) => {
+    console.log(filePath)
+    let engine = new mume.MarkdownEngine({
+      filePath: filePath,
+      config: {
+        configPath: configPath,
+        previewTheme: "github-light.css",
+        // revealjsTheme: "white.css"
+        codeBlockTheme: "default.css",
+        printBackground: true,
+        enableScriptExecution: true, // <= for running code chunks
+      },
+    });
+    // html export
+    await engine.htmlExport({ offline: true, runAllCodeChunks: true });
+
+    if (ouputDir) {
+      let htmlPath = filePath.replace(/\.[^.]+$/, '.html');
+      let htmlRelPath = path.relative(workingDir, htmlPath)
+      let outputPath = path.join(ouputDir, htmlRelPath)
+      await fs.mkdir(path.dirname(outputPath), { recursive: true })
+      await fs.copyFile(htmlPath, outputPath, async (err) => {
+        if(err) console.log(err);
       });
-      // html export
-      await engine.htmlExport({ offline: true, runAllCodeChunks: true });
-      if (ouputDir) {
-        let htmlPath = filePath.replace(/\.[^.]+$/, '.html');
-        let htmlRelPath = path.relative(workingDir, htmlPath)
-        let outputPath = path.join(ouputDir, htmlRelPath)
-        await fs.mkdir(path.dirname(outputPath), { recursive: true })
-        await fs.rename(htmlPath, outputPath, async (err) => {
-          if(err) console.log(err);
-        });
-        
-      }
-    })
-    await Promise.all(render_promises);
+      
+    }
   })
+
+  await Promise.all(globPromises);
 
   return process.exit();
 }

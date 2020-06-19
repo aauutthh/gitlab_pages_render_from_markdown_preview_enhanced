@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@shd101wyy/mume": "^0.6.0",
-    "glob-promise": "^3.4.0"
+    "@shd101wyy/mume": "^0.6.0"
   }
 }
