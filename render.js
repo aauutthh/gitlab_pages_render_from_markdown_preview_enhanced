@@ -31,7 +31,7 @@ async function main() {
         breakOnSingleNewLine: true,
 
         // Enable smartypants and other sweet transforms.
-        enableTypographer: false,
+        enableTypographer: true,
 
         // Enable conversion of URL-like text to links in the markdown preview.
         enableLinkify: true,
@@ -61,7 +61,7 @@ async function main() {
         frontMatterRenderingOption: 'none', // 'none' | 'table' | 'code block'
 
         // Mermaid theme
-        mermaidTheme: 'mermaid.css', // 'mermaid.css' | 'mermaid.dark.css' | 'mermaid.forest.css'
+        mermaidTheme: 'default', // 'mermaid.css' | 'mermaid.dark.css' | 'mermaid.forest.css'
 
         // Code Block theme
         // If `auto.css` is chosen, then the code block theme that best matches the current preview theme will be picked.
@@ -187,7 +187,7 @@ async function main() {
       },
     });
     // html export
-    await engine.htmlExport({ offline: true, runAllCodeChunks: true });
+    await engine.htmlExport({ offline: false, runAllCodeChunks: true });
 
     if (ouputDir) {
       let htmlPath = filePath.replace(/\.[^.]+$/, '.html');

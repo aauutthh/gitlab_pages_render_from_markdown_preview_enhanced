@@ -1,5 +1,7 @@
-FROM openjdk:13-alpine3.10
-RUN apk add --update --no-cache nodejs-current \
+FROM openjdk:8-jre-alpine3.9
+RUN apk update && \
+    apk upgrade && \
+    apk add --update --no-cache nodejs-current \
                                 npm \
                                 graphviz \
                                 ttf-droid \
