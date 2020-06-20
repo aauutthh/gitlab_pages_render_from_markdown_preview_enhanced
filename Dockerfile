@@ -6,12 +6,12 @@ RUN apk update && \
                        graphviz \
                        ttf-droid \
                        ttf-droid-nonlatin && \
-    ln -s /gitlab-pages-render/render.js /bin/render
+    ln -s /markdown-preview-enhanced-render/render.js /bin/render
 
-RUN mkdir -p /gitlab-pages-render 
-COPY ["package.json", "render.js", "/gitlab-pages-render/"]
+RUN mkdir -p /markdown-preview-enhanced-render
+COPY ["package.json", "render.js", "/markdown-preview-enhanced-render/"]
 
-RUN cd /gitlab-pages-render && \
+RUN cd /markdown-preview-enhanced-render&& \
     npm install --save
 COPY .mume /root/.mume
 
