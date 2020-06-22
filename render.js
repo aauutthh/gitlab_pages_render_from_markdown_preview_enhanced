@@ -205,7 +205,7 @@ async function main() {
     let htmlPath = filePath.replace(/\.[^.]+$/, '.html');
     let htmlRelPath = path.relative(workingDir, htmlPath)
     let itemName = htmlRelPath.replace(/\.[^.]+$/, '');
-    return `<li><a href='${htmlRelPath}'>${itemName}</a></li>`
+    return `<li><a href='${itemName}'>${itemName}</a></li>`
   })
 
   listInnerHTML = listHTMLFrags.join('\n')
